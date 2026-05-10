@@ -2,5 +2,7 @@
 Verilog Practice rip
 
 ## Sections
-1. Basics
-2. 
+1. Verilog Language
+   - Basics -- Wires, Assignments
+   - Vectors
+2.  
