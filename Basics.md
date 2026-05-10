@@ -1,5 +1,4 @@
-### Topics covered so far
-*(will keep updating)*
+### Topics
 
 1. Assignment: `assign out = in;` -- sets out = in
 2. Logical Inverter:  `assign out = !in;` -- sets out = LOGICAL NOT(in); returns 1 if `in` is non-zero
