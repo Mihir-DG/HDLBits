@@ -34,3 +34,19 @@ Verilog Practice rip
 4. See adder examples for cascaded modules
 5. Basic adder -- ripple carry adder, which is slow; Carry select adder is faster, at the cost of additional components
 
+## Procedures
+1. Combinational always blocks -- `always @(*) begin ... end`
+   - Any signal assigned inside this block must be declared as a reg. However, because the block is combinational, the physical hardware will just be wires and gates.
+   - Used instead of `assign`; allows the use of more complex logic though, like `case` and `if/else` conditionals; Procedural => conditionals
+   - For conditionals, make sure you have a default case; if not, creates latches that "remembers" the last value
+   - See procedures001_combinationalAlways.v
+2. Clocked always blocks -- `always @(posedge clk) begin ... end`
+   - Clocked always blocks create a blob of combinational logic just like combinational always blocks, but also creates a set of flip-flops (or "registers") at the output of the blob of combinational logic.
+   - Instead of the outputs of the blob of logic being visible immediately, the outputs are visible only immediately after the next (posedge clk)
+3. Assignment types:
+      - Continuous assignments -- `assign a = b;` --> *cannot* be used inside a procedure (`always` block)
+      - Procedural blocking assignments -- `a = b;` use in procedural combinational circuit (combinational `always` block)
+      - Procedural non-blocking assignments -- `a <= b;` use in procedural sequential circuit (clocked `always` block)
+- For 2 and 3, see procedures002_assignmentTypes.v + procedures002_timing.png
+- Procedural non-blocking assignments usually lead to a delay (state changes on clk edge) not seen in continuous or blocking assignments.
+4. Ternary operators: `assign out = (sel == 1'b1)? x : y` --> assign `out = x` if `sel = 1`, else assign `out = y`. 
