@@ -65,3 +65,6 @@ Verilog Practice rip
 3. Positive edge of clock ==> `always @ (posedge clk)`; Negative edge => `negedge`
 4. Asynchronous reset ==> has to be included in `always @ (*reset condition here*)` block
 5. Latches --> follows input always (always @(*)) IF enable is ON. See latchesffs005_latch.v
+6. When combining DFFs with gates, you don't need to use an initialization vector (IV) in the module definition. Application in a larger chain may change that, not sure yet.
+7. LFSRs built with gates + DFFs!
+8. Sequential Dependency: If `b` depends on `a`, then the "correct" value of `b` will be delayed by one clock cycle after `a` being updated, if they're both being kept in a DFF sequential block. If `b` needs to update alongside `a` move it to a continuous assignment OUTSIDE the sequential block. See `z` assignment in latchesffs_009_sequentialDependency.v 
