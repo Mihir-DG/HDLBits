@@ -1,4 +1,4 @@
-# HDLBits
+# HDLBits Solutions
 Verilog Practice rip
 
 ## Basics
@@ -49,4 +49,19 @@ Verilog Practice rip
       - Procedural non-blocking assignments -- `a <= b;` use in procedural sequential circuit (clocked `always` block)
 - For 2 and 3, see procedures002_assignmentTypes.v + procedures002_timing.png
 - Procedural non-blocking assignments usually lead to a delay (state changes on clk edge) not seen in continuous or blocking assignments.
-4. Ternary operators: `assign out = (sel == 1'b1)? x : y` --> assign `out = x` if `sel = 1`, else assign `out = y`. 
+5. Incompletely defined procedural outcomes (without defaults (for cases) / elses (for ifs) ) usually yields a warning: `Warning (10240): ... inferring latch(es)`
+6. `casez` allows you to use cases with X's (don't cares) -- written as `z` or `?` in Verilog. See procedures_007_casezPriorityEncoder.v
+
+## Additional Verilog
+1. Ternary operators: `assign out = (sel == 1'b1)? x : y` --> assign `out = x` if `sel = 1`, else assign `out = y`.
+2. Wide-gate reduction: 100-input gates can be implemented on a vector
+   - eg.: `assign parity = ^ in[7:0];` ==> `parity = in[7] ^ in[6] ^ in[5] .... ^ in [0];`
+   - Applies to ANDs, ORs, NOTs, XORs
+3. You need to use generate blocks to repetitively instantiate hardware; Calling a module multiple times requires a generate block. See addl_004!
+
+## Latches and Flip-Flops
+1. Create a D flip-flop by simply assigning an input-output pair in a sequential logic block -- `q <= d`; also applies for wires `q[n:m]` and `d[n:m]` to create `(N - M + 1)` flip-flops.
+2. Active high synchronous reset => on positive edge, if `reset == 1`, set `q = 0;`
+3. Positive edge of clock ==> `always @ (posedge clk)`; Negative edge => `negedge`
+4. Asynchronous reset ==> has to be included in `always @ (*reset condition here*)` block
+5. Latches --> follows input always (always @(*)) IF enable is ON. See latchesffs005_latch.v
