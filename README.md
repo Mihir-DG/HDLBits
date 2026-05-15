@@ -67,4 +67,19 @@ Verilog Practice rip
 5. Latches --> follows input always (always @(*)) IF enable is ON. See latchesffs005_latch.v
 6. When combining DFFs with gates, you don't need to use an initialization vector (IV) in the module definition. Application in a larger chain may change that, not sure yet.
 7. LFSRs built with gates + DFFs!
-8. Sequential Dependency: If `b` depends on `a`, then the "correct" value of `b` will be delayed by one clock cycle after `a` being updated, if they're both being kept in a DFF sequential block. If `b` needs to update alongside `a` move it to a continuous assignment OUTSIDE the sequential block. See `z` assignment in latchesffs_009_sequentialDependency.v 
+8. Sequential Dependency: If `b` depends on `a`, then the "correct" value of `b` will be delayed by one clock cycle after `a` being updated, if they're both being kept in a DFF sequential block. If `b` needs to update alongside `a` move it to a continuous assignment OUTSIDE the sequential block. See `z` assignment in latchesffs_009_sequentialDependency.v
+
+## Counters
+1. Reset behavior works the same as DFFs
+2. Load value is the value used to overwrite previous value when reset is enabled.
+3. You can slow down a clock in one of two ways:
+         - Slow Enables: Requires a secondary enable signal that indicates when the counter should actually jump.
+         - Cascaded counters: Putting two 0-9 counters together such that second one is only enabled when first one hits 9. For example, if you have a 100 Hz enable signal driving the first one, the second one counts at 10 Hz, since it's only turned on 10% of the time. See counters005_freqDivider.v
+4. BCD counter ==> 0-9 decimal counter
+
+## Shift Registers
+1. Right shift: 0110 --> 0011
+2. Left shift: 0110 --> 1100
+3. Use concatenation operators for optimizing shift implementations: eg., `q <= {q[98:0], q[99]};` performs a left circular shift. See shiftRegister003
+4. See LFSR implementation in shiftRegister005; should generally be done using vector concatenation.
+5. 
