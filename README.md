@@ -82,4 +82,8 @@ Verilog Practice rip
 2. Left shift: 0110 --> 1100
 3. Use concatenation operators for optimizing shift implementations: eg., `q <= {q[98:0], q[99]};` performs a left circular shift. See shiftRegister003
 4. See LFSR implementation in shiftRegister005; should generally be done using vector concatenation.
-5. 
+
+## Finite State Machines (FSMs)
+1. Use `parameter` for state encodings; creates labels for numbers, improves readability + easier to change state encodings since it's declared at the top.
+2. Define state transition logic in a combinational block; Sequential block should iterate the FSM (`state <= next_state`). Use conditional assignments for output assignments after these blocks, ideally. See `FSM001_async.v`
+3. Use `regs` for `state` and `next_state` --> modifiable in a sequential block.
