@@ -118,4 +118,12 @@ Verilog Practice rip
 - The (stratified) event queue decides the order of operations for every time step in a simulation.
 - `$stop` vs `$finish` --> stop pauses the simulation, allowing inspection and then continuing. Finishing terminates the simulation entirely for an end-state inspection.
 - `.vcd` files create scriptable output that you can use to inspect the output later. See https://chipverify.com/verilog/verilog-vcd. There's some important functions you should know - `$dumpfile` (specify filename, defaults to `dump.vcd`), `$dumpvars` (controls which variables are recorded), `$dumpon`, `$dumpoff` (toggled recording control), `$dumpall` (creates a checkpoint), `$dumplimit` (sets a size limit on vcd file, in bytes)
-- 
+
+
+## Questa Run Sequence
+1. `cd C:/Users/mdasg/Desktop/FPGAPractice/DFF` --> sub in whatever the top level folder is
+2. `vlib work`
+3. `vlog my_dff.v dff_tb.v`
+4. `vsim -voptargs="+acc" work.dff_tb`
+5. `add wave *`
+6. `run 150 ns`
