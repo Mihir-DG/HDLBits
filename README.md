@@ -91,3 +91,31 @@ Verilog Practice rip
 5. One-Hot State Encodings: instead of having separate registers for states (through `parameter`), vectorize the process. For example, for states `A, B, C, D`, set `state[3:0]` where `state[0]` corresponds to `A`, `state[1]` corresponds to `B`, etc.
 6. For one-hot cases, a valid state definition means that there can only be one `1` in the vector -- one-hit rule. For example, `state = C` corresponds to `state[3:0] = 0010`; Any sequence like `1010` is invalid in this context - for more advanced applications, filter out these invalid states and throw an error somehow?
 7. Be wary of using logic simplification on one-hot machine encodings. Things like subtractionary/exclusionary simplifications create issues when dealing with random state sequences that don't follow the one-hit rule. General rule of thumb is to not simplify beyond any order of operations simplifications: eg., `(A AND C) OR (A AND B) = (A OR B) AND C`
+
+## Designing Test Benches
+- Creates a simulation environment to verify the functionality of a digital design
+- DUT --> Device Under Test
+- Test bench --> *Separate*, *top-level* module that: generates input stimuli, captures output, compares that output against expected output
+- Generated with `functions` and `tasks`
+- tb_DUT doesn't have any ports (no I/O) -- as the top-level entity, all instantiations to the DUT are made internally
+- https://chipverify.com/verilog/verilog-testbench
+  
+**General Workflow:**
+1. Declare top-level tb (test bench) module; again, no ports
+2. Declare signals for the DUT connection: inputs are regs, outputs are wires, any additional monitoring signals should be regs
+3. Instantiate DUT and connect signals declared in step 2 to the module instantiation
+4. Initialize test bench inputs using an `initial` block. Include a `$finish` timestamp as well at the end of the initial block to end the simulation.
+5. Write test stimulus using a `task`
+      - Commonly used structures for test stimulus:
+        - `#(10)` --> delays for 10 time units, and allows inputs to settle + prevents race conditions through concurrency
+        - `$random` -->  generates random numbers based on the width of the bus it's being applied to. (applied to a single-lead wire, randomly switches between 0 and 1, but on a 3-bit wire, generates 0-7 randomly)
+        - Clock generation --> `always #5 clk = ~clk;` --> creates a clock with 10 ns period.
+        - Calls checker code at the end of the test.
+        - $monitor("Time = %0t clk = %0d sig = %0d", $time, clk, sig); --> This system task will print out the signal values everytime they change (used in `initial` block generally, before input initialization)
+
+6. Write checker code, generally using a combination of `functions` and `tasks`. Top-level is usually a task.
+
+- The (stratified) event queue decides the order of operations for every time step in a simulation.
+- `$stop` vs `$finish` --> stop pauses the simulation, allowing inspection and then continuing. Finishing terminates the simulation entirely for an end-state inspection.
+- `.vcd` files create scriptable output that you can use to inspect the output later. See https://chipverify.com/verilog/verilog-vcd. There's some important functions you should know - `$dumpfile` (specify filename, defaults to `dump.vcd`), `$dumpvars` (controls which variables are recorded), `$dumpon`, `$dumpoff` (toggled recording control), `$dumpall` (creates a checkpoint), `$dumplimit` (sets a size limit on vcd file, in bytes)
+- 
