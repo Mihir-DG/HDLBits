@@ -1,6 +1,20 @@
 # HDLBits Solutions
 Verilog Practice rip
 
+## Contents
+1. Basics
+2. Vectors
+3. Modules
+4. Procedures
+5. Additional Verilog
+6. Latches and DFFs
+7. Counters
+8. Shift Registers
+9. FSMs
+10. Test Benches
+11. Questa Run Sequence
+
+
 ## Basics
 
 1. Assignment: `assign out = in;` -- sets out = in
